@@ -554,8 +554,9 @@ while simulation_app.is_running() and step_count < args.simulation_steps:
     if args.save_images and step_count % IMAGE_CAPTURE_INTERVAL == 0 and CV2_AVAILABLE:
         # 메인 카메라 이미지 캡처
 
-        for step in range(max_steps):  # max_steps는 적당한 최대 반복 횟수, 예: 100
+        for step in range(500):  # max_steps는 적당한 최대 반복 횟수, 예: 100
             step_count += 1
+            step +=1
             rgba = main_camera.get_rgba()
             if rgba is not None and rgba.size > 0:
                 break
