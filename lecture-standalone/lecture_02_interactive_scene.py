@@ -484,7 +484,12 @@ while simulation_app.is_running() and step_count < args.simulation_steps:
     # 정기적으로 이미지 캡처 (옵션)
     if args.save_images and step_count % IMAGE_CAPTURE_INTERVAL == 0 and CV2_AVAILABLE:
         # 메인 카메라 이미지 캡처
-        main_rgb = main_camera.get_rgba()[:, :, :3]
+        # main_rgb = main_camera.get_rgba()[:, :, :3]
+        rgba = main_camera.get_rgba()
+        if rgba is not None and rgba.ndim == 3:
+            main_rgb = rgba[:, :, :3]
+        else:
+            print("Warning: Camera image data not ready or invalid shape", rgba)
         main_depth = main_camera.get_depth()
         
         # 탑뷰 카메라 이미지 캡처
