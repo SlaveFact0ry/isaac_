@@ -484,12 +484,15 @@ while simulation_app.is_running() and step_count < args.simulation_steps:
     # 정기적으로 이미지 캡처 (옵션)
     if args.save_images and step_count % IMAGE_CAPTURE_INTERVAL == 0 and CV2_AVAILABLE:
         # 메인 카메라 이미지 캡처
-        # main_rgb = main_camera.get_rgba()[:, :, :3]
-        rgba = main_camera.get_rgba()
-        if rgba is not None and rgba.ndim == 3:
-            main_rgb = rgba[:, :, :3]
+        main_rgb = main_camera.get_rgba()
+        print("Shape of rgba:", main_rgb.shape)
+        if main_rgb.ndim == 2 and main_rgb.shape[1] == 4:
+        # N x 4 배열인 경우 R,G,B 채널만 분리하려면:
+            main_rgb = main_rgb[:, :3]
+        # 필요한 경우 reshape 또는 후처리로 2D 이미지 형태로 변환
         else:
-            print("Warning: Camera image data not ready or invalid shape", rgba)
+            print("Unexpected shape:", main_rgb.shape)
+        # main_rgb = main_camera.get_rgba()[:, :, :1]
         main_depth = main_camera.get_depth()
         
         # 탑뷰 카메라 이미지 캡처
