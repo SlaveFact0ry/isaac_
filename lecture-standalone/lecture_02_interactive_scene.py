@@ -481,16 +481,15 @@ while simulation_app.is_running() and step_count < args.simulation_steps:
         print(f"[Step {step_count:4d}] 카메라 각도: {math.degrees(camera_angle):.1f}°, "
               f"구 위치: [{sphere_pos[0]:.2f}, {sphere_pos[1]:.2f}, {sphere_pos[2]:.2f}]")
     
-    # 정기적으로 이미지 캡처 (옵션)
-    if args.save_images and step_count % IMAGE_CAPTURE_INTERVAL == 0 and CV2_AVAILABLE:
-        # 메인 카메라 이미지 캡처
-        
-        main_rgb = main_camera.get_rgba()
-        while main_rgb is None or main_rgb.size == 0:
-            time.sleep(0.1)  # 0.1초 대기
-            main_rgb = main_camera.get_rgba()
 
-        print("RGBA shape after wait:", rgba.shape)
+    # 정기적으로 이미지 캡처 (옵션)
+ 
+        # main_rgb = main_camera.get_rgba()
+        # while main_rgb is None or main_rgb.size == 0:
+        #     time.sleep(0.1)  # 0.1초 대기
+        #     main_rgb = main_camera.get_rgba()
+
+        # print("RGBA shape after wait:", rgba.shape)
         # print("Shape of rgba:", main_rgb.shape)
         # if main_rgb.ndim == 2 and main_rgb.shape[1] == 4:
         # # N x 4 배열인 경우 R,G,B 채널만 분리하려면:
@@ -552,7 +551,21 @@ while simulation_app.is_running() and step_count < args.simulation_steps:
         time.sleep(0.05)  # 슬로우 모션 효과
         if step_count == SLOW_MOTION_START:
             print(f"\n🎬 슬로우 모션 구간 ({SLOW_MOTION_END - SLOW_MOTION_START} 스텝)")
-    
+    if args.save_images and step_count % IMAGE_CAPTURE_INTERVAL == 0 and CV2_AVAILABLE:
+        # 메인 카메라 이미지 캡처
+
+        for step in range(max_steps):  # max_steps는 적당한 최대 반복 횟수, 예: 100
+            step_count += 1
+            rgba = main_camera.get_rgba()
+            if rgba is not None and rgba.size > 0:
+                break
+            time.sleep(0.01)  # 약간 쉼 (선택적)
+
+        if rgba is None or rgba.size == 0:
+            print("Failed to get valid image data within max steps")
+        else:
+            print("Image data ready:", rgba.shape)
+
     step_count += 1
     
     # 일반 속도
