@@ -299,7 +299,7 @@ print("  ✓ 탑뷰 카메라 생성")
 
 # 이미지 저장 디렉토리 생성
 if args.save_images:
-    image_dir = "/lecture-standalone/camera_images"
+    image_dir = "~/isaac_/lecture-standalone/camera_images"
     os.makedirs(image_dir, exist_ok=True)
     print(f"  ✓ 이미지 저장 디렉토리 생성: {image_dir}")
 
