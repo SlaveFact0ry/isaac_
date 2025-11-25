@@ -487,7 +487,8 @@ while simulation_app.is_running() and step_count < args.simulation_steps:
         print ("1111111111111111")
         main_rgb = main_camera.get_rgba()
         print(main_rgb.shape)
-        main_rgb = main_camera.get_rgba()[:, :, :1]
+        if main_rgb.shape != (0,) :
+            main_rgb = main_camera.get_rgba()[:, :, :1]
         main_depth = main_camera.get_depth()
         
         # 탑뷰 카메라 이미지 캡처
