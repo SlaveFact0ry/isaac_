@@ -484,12 +484,14 @@ while simulation_app.is_running() and step_count < args.simulation_steps:
     # 정기적으로 이미지 캡처 (옵션)
     if args.save_images and step_count % IMAGE_CAPTURE_INTERVAL == 0 and CV2_AVAILABLE:
         # 메인 카메라 이미지 캡처
-        main_rgb = main_camera.get_rgb()
-        main_rgb = main_camera.get_rgb()[:, :, :1]
+        print ("1111111111111111")
+        main_rgb = main_camera.get_rgba()
+        print(main_rgb.shape)
+        main_rgb = main_camera.get_rgba()[:, :, :1]
         main_depth = main_camera.get_depth()
         
         # 탑뷰 카메라 이미지 캡처
-        top_rgb = top_camera.get_rgb()[:, :, :3]
+        top_rgb = top_camera.get_rgba()[:, :, :3]
         
         # 이미지 저장
         image_path = f"{image_dir}/main_camera_step_{step_count:04d}.png"
