@@ -481,41 +481,29 @@ while simulation_app.is_running() and step_count < args.simulation_steps:
         print(f"[Step {step_count:4d}] 카메라 각도: {math.degrees(camera_angle):.1f}°, "
               f"구 위치: [{sphere_pos[0]:.2f}, {sphere_pos[1]:.2f}, {sphere_pos[2]:.2f}]")
     
-
     # 정기적으로 이미지 캡처 (옵션)
- 
-        # main_rgb = main_camera.get_rgba()
-        # while main_rgb is None or main_rgb.size == 0:
-        #     time.sleep(0.1)  # 0.1초 대기
-        #     main_rgb = main_camera.get_rgba()
-
-        # print("RGBA shape after wait:", rgba.shape)
-        # print("Shape of rgba:", main_rgb.shape)
-        # if main_rgb.ndim == 2 and main_rgb.shape[1] == 4:
-        # # N x 4 배열인 경우 R,G,B 채널만 분리하려면:
-        #     main_rgb = main_rgb[:, :3]
-        # # 필요한 경우 reshape 또는 후처리로 2D 이미지 형태로 변환
-        # else:
-        #     print("Unexpected shape:", main_rgb.shape)
-        # # main_rgb = main_camera.get_rgba()[:, :, :1]
-        # main_depth = main_camera.get_depth()
+    if args.save_images and step_count % IMAGE_CAPTURE_INTERVAL == 0 and CV2_AVAILABLE:
+        # 메인 카메라 이미지 캡처
+        main_rgb = main_camera.get_rgb()
+        main_rgb = main_camera.get_rgb()[:, :, :1]
+        main_depth = main_camera.get_depth()
         
-        # # 탑뷰 카메라 이미지 캡처
-        # top_rgb = top_camera.get_rgba()[:, :, :3]
+        # 탑뷰 카메라 이미지 캡처
+        top_rgb = top_camera.get_rgb()[:, :, :3]
         
-        # # 이미지 저장
-        # image_path = f"{image_dir}/main_camera_step_{step_count:04d}.png"
-        # cv2.imwrite(image_path, cv2.cvtColor((main_rgb * 255).astype(np.uint8), cv2.COLOR_RGB2BGR))
+        # 이미지 저장
+        image_path = f"{image_dir}/main_camera_step_{step_count:04d}.png"
+        cv2.imwrite(image_path, cv2.cvtColor((main_rgb * 255).astype(np.uint8), cv2.COLOR_RGB2BGR))
         
-        # depth_path = f"{image_dir}/main_depth_step_{step_count:04d}.png"
-        # # Depth를 시각화용으로 정규화
-        # depth_normalized = (depth / np.max(depth) * 255).astype(np.uint8) if np.max(depth) > 0 else depth
-        # cv2.imwrite(depth_path, depth_normalized)
+        depth_path = f"{image_dir}/main_depth_step_{step_count:04d}.png"
+        # Depth를 시각화용으로 정규화
+        depth_normalized = (depth / np.max(depth) * 255).astype(np.uint8) if np.max(depth) > 0 else depth
+        cv2.imwrite(depth_path, depth_normalized)
         
-        # top_path = f"{image_dir}/top_camera_step_{step_count:04d}.png"
-        # cv2.imwrite(top_path, cv2.cvtColor((top_rgb * 255).astype(np.uint8), cv2.COLOR_RGB2BGR))
+        top_path = f"{image_dir}/top_camera_step_{step_count:04d}.png"
+        cv2.imwrite(top_path, cv2.cvtColor((top_rgb * 255).astype(np.uint8), cv2.COLOR_RGB2BGR))
         
-        # print(f"  📸 이미지 저장: step {step_count}")
+        print(f"  📸 이미지 저장: step {step_count}")
     
     # 특별 이벤트들
     
@@ -551,22 +539,7 @@ while simulation_app.is_running() and step_count < args.simulation_steps:
         time.sleep(0.05)  # 슬로우 모션 효과
         if step_count == SLOW_MOTION_START:
             print(f"\n🎬 슬로우 모션 구간 ({SLOW_MOTION_END - SLOW_MOTION_START} 스텝)")
-    if args.save_images and step_count % IMAGE_CAPTURE_INTERVAL == 0 and CV2_AVAILABLE:
-        # 메인 카메라 이미지 캡처
-
-        for step in range(500):  # max_steps는 적당한 최대 반복 횟수, 예: 100
-            step_count += 1
-            step +=1
-            rgba = main_camera.get_rgba()
-            if rgba is not None and rgba.size > 0:
-                break
-            time.sleep(0.01)  # 약간 쉼 (선택적)
-
-        if rgba is None or rgba.size == 0:
-            print("Failed to get valid image data within max steps")
-        else:
-            print("Image data ready:", rgba.shape)
-
+    
     step_count += 1
     
     # 일반 속도
