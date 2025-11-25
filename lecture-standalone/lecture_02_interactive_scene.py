@@ -292,7 +292,7 @@ top_camera = Camera(
     name="top_camera",
     position=np.array([0.0, 0.0, 8.0]),
     frequency=20,
-    resolution=(256, 256),
+    resolution=(512, 512),
     orientation=rot_utils.euler_angles_to_quats(np.array([0, 90, 0]), degrees=True),
 )
 print("  ✓ 탑뷰 카메라 생성")
