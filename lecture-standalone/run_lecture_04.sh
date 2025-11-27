@@ -18,7 +18,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
 # Isaac Sim 경로 확인
-ISAAC_SIM_PATH="/home/wj/isaac-sim"  # 본인의 isaac-sim 경로로 변경 필요
+ISAAC_SIM_PATH="/home/int/isaacsim/_build/linux-x86_64/release/"  # 본인의 isaac-sim 경로로 변경 필요
 if [ ! -d "$ISAAC_SIM_PATH" ]; then
     echo "Error: Isaac Sim이 $ISAAC_SIM_PATH 에 설치되어 있지 않습니다."
     exit 1
